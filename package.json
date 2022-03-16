@@ -5,8 +5,15 @@
   "engines": {
     "node": "14.x"
   },
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "now-sapper"
+    }
+  ],
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "build index.js"
   },
   "keywords": [],
   "author": "",
