@@ -1,17 +1,20 @@
 {
   "name": "icx",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "type": "module",
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "node-fetch": "^2.6.7"
+    "body-parser": "^1.19.2",
+    "express": "^4.17.3",
+    "express-basic-auth": "^1.2.1",
+    "express-handlebars": "^6.0.3",
+    "nodemon": "^2.0.15",
+    "request": "^2.88.2"
   },
-  "devDependencies": {},
   "description": ""
 }
