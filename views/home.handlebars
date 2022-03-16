@@ -1,0 +1,26 @@
+{{!-- Contenido que estará disponible en el {{{body}}} del main --}}
+<h2>Listado de todos los contactos</h2>
+<div class="scroll">
+<table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">lookupName</th>
+      <th scope="col">createdTime</th>
+      <th scope="col">updatedTime</th>
+    </tr>
+  </thead>
+  {{#if contacts}}
+  <tbody>
+    {{#each contacts.items}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.lookupName}}</td>
+      <td>{{this.createdTime}}</td>
+      <td>{{this.updatedTime}}</td>  
+    </tr>
+    {{/each}}
+  </tbody>
+  {{/if}}
+</table>
+</div>

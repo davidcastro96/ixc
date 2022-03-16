@@ -1,0 +1,49 @@
+{{! Layout html }}
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>contactos</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <style>
+      div.scroll { height: 80%; overflow: auto; }
+    </style>
+  </head>
+  <body class="container">
+    <header>
+      <nav>
+        <span>
+          <a href="/">Home</a>
+          <a href="crear">Crear contacto</a>
+        </span>
+      </nav>
+      <div class="row">
+        <div class="col-sm">
+          <h1>Lista de contactos</h1>
+        </div>
+        <div class="col-sm">
+          <div
+            class="spiner"
+            style="padding: 1.0rem;margin-right: 0;margin-left: 0;border-width: 1px;border-top-left-radius: .25rem;border-top-right-radius: .25rem;"
+          >
+            <div class="spinner-border float-right" role="status">
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- principio del contenido dínamico -->
+    {{{body}}}
+    <!-- final del contenido dínamico -->
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"
+    ></script>
+    <script type="text/javascript">
+      $(window).load(function() { $(".spiner").fadeOut("slow"); });
+    </script>
+  </body>
+</html>
