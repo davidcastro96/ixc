@@ -1,0 +1,48 @@
+<h2>crear un contacto</h2>
+<form action="/form" method="POST">
+  <div class="row">
+    <div class="col-sm">
+      <label>login</label>
+      <input
+        autocomplete="off"
+        type="text"
+        class="form-control"
+        name="login"
+        placeholder="login"
+        required
+      />
+    </div>
+    <div class="col-sm">
+      <label>nombre</label>
+      <input
+        autocomplete="off"
+        type="text"
+        class="form-control"
+        name="nombre"
+        placeholder="nombre"
+        required
+      />
+    </div>
+    <div class="col-sm">
+      <label>apellido</label>
+      <input
+        autocomplete="off"
+        type="text"
+        class="form-control"
+        name="apellido"
+        placeholder="apellido"
+        required
+      />
+    </div>
+  </div>
+  &nbsp;
+  <div>
+    <button class="btn btn-primary" type="submit">crear</button>
+  </div>
+  &nbsp;
+
+  {{#if form}}
+    <h5>Último usuario creado
+      <span class="badge badge-secondary">{{form.login}}</span></h5>
+  {{/if}}
+</form>
