@@ -2,59 +2,79 @@
 <h2>Listado de todos los contactos</h2>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-  function deleteContact(id){ 
-  
-  fetch(`/${id}`).then(function(response) {
-  if(response.ok) {
-    Swal.fire('contacto '+ id +' eliminado');
-    window.location.reload();
-    } else {
-      console.log('Error eliminando contacto');
-    }
-  })
-  .catch(function(error) {
-    console.log('Hubo un problema con la petición Fetch:' + error.message);
-  });
+  function deleteContact(id) {
+    fetch(`/${id}`).then(function (response) {
+      if (response.ok) {
+        Swal.fire('contacto ' + id + ' eliminado');
+        window.location.reload();
+      } else {
+        console.log('Error eliminando contacto');
+      }
+    })
+      .catch(function (error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+      });
+  }
+  //----------------------------------------------
+  function editarContact(id) {
+    (async () => {
+
+      const { value: formValues } = await Swal.fire({
+        title: `actualización de datos del id ${id}`,
+        html:
+          '<input id="swal-input1" placeholder="login" class="swal2-input">' +
+          '<input id="swal-input2" placeholder="nombre" class="swal2-input">' +
+          '<input id="swal-input3" placeholder="apellido" class="swal2-input">',
+        focusConfirm: false,
+        preConfirm: () => {
+          return [
+            document.getElementById('swal-input1').value,
+            document.getElementById('swal-input2').value,
+            document.getElementById('swal-input3').value
+          ]
+        }
+      })
+
+      if (formValues) {
+        Swal.fire(JSON.stringify(formValues))
+        console.log(formValues)
+        fetch(`/${id}`,{
+          method: "PATH",
+          body: JSON.stringify(formValues)
+
+      });
+      }
+
+    })()
   }
 </script>
-
 <div class="scroll">
   <table class="table table-dark">
-    <thead
-      style="position: sticky;
+    <thead style="position: sticky;
             top: -1;
-            z-index: 10; background:#343a40"
-    >
+            z-index: 10; background:#343a40">
       <tr>
         <th scope="col">#</th>
         <th scope="col">lookupName</th>
         <th scope="col">createdTime</th>
         <th scope="col">updatedTime</th>
-        <th></th>
-        <th></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
       </tr>
     </thead>
     {{#if contacts}}
-      <tbody>
-        {{#each contacts.items}}
-          <tr>
-            <th scope="row">{{this.id}}</th>
-            <td>{{this.lookupName}}</td>
-            <td>{{this.createdTime}}</td>
-            <td>{{this.updatedTime}}</td>
-            <td><button
-                class="btn btn-info"
-                type="button"
-                onclick="editarContac({{this.id}})"
-              >editar</button></td>
-            <td><button
-                class="btn btn-danger"
-                type="button"
-                onclick="deleteContact({{this.id}})"
-              >eliminar</button></td>
-          </tr>
-        {{/each}}
-      </tbody>
+    <tbody>
+      {{#each contacts.items}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.lookupName}}</td>
+        <td>{{this.createdTime}}</td>
+        <td>{{this.updatedTime}}</td>
+        <td><button class="btn btn-info" type="button" onclick="editarContact({{this.id}})">editar</button></td>
+        <td><button class="btn btn-danger" type="button" onclick="deleteContact({{this.id}})">eliminar</button></td>
+      </tr>
+      {{/each}}
+    </tbody>
     {{/if}}
   </table>
 </div>

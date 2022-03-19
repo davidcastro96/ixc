@@ -64,7 +64,7 @@ function create() {
 }
 
 /* ----------------------------------------------- */
-//FORM POST
+//FORM POST CREAR CONTACTO
 app.post("/form", (req, res) => {
   const form = req.body;
   const options = {
@@ -85,7 +85,7 @@ app.post("/form", (req, res) => {
   });
 });
 /* ----------------------------------------------- */
-// FORM DELETE
+// DELETE
 app.get("/:id", (req, res) => {
   const id = req.params.id;
   const options = {
@@ -94,10 +94,35 @@ app.get("/:id", (req, res) => {
   };
   request(options, (error, response, body) => {
     if (!error) {
-      res.redirect("/");
+      res.render("home", {
+        layout: "main",
+      });
     }
   });
 });
-
+/* ----------------------------------------------- */
+app.path("/:id", (req, res) => {
+  const id = req.params.id;
+  const body = req.body;
+  console.log(req.body);
+  const options = {
+    uri: `https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/${id}`,
+    method: "PATH",
+    json: {
+      login: body.login,
+      name: {
+        first: body.nombre,
+        last: body.apellido,
+      },
+    },
+  };
+  request(options, (error, response, body) => {
+    if (!error) {
+      res.render("home", {
+        layout: "main",
+      });
+    }
+  });
+});
 //Inicia el server
 app.listen(3000);
