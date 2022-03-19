@@ -1,11 +1,19 @@
 const express = require("express");
 const request = require("request");
+const sqlite3 = require("sqlite3").verbose();
 const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 const app = express();
 
+let db = new sqlite3.Database("./db/contacts.db", (err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log("conectado a la base de datos");
+});
+
 const url =
-  "https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts";
+  "https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts?offset=1100&limit=500";
 /* ----------------------------------------------- */
 //inicio el motor de plantillas
 app.engine("handlebars", exphbs.engine());
@@ -30,7 +38,6 @@ app.get("/", (req, res) => {
           layout: "main",
           contacts: contacts,
         });
-        //console.log(contacts);
       }
     }
   );
@@ -40,10 +47,28 @@ app.get("/form", (req, res) => {
   res.render("form", { layout: "main" });
 });
 /* ----------------------------------------------- */
+// guardar data en la base de datos sqlite3
+
+function create() {
+  //const {id, lookupName, createdTime, updatedTime} = quoteObj;
+  const result = db.run(
+    'INSERT INTO datos (idapi,nombre,creado,actualizado) VALUES ("1","dsa","ds","dsds");'
+  );
+
+  let message = "Error in creating quote";
+  if (result.changes) {
+    message = "Quote created successfully";
+  }
+
+  return { message };
+}
+
+/* ----------------------------------------------- */
+//FORM POST
 app.post("/form", (req, res) => {
   const form = req.body;
   const options = {
-    uri: url,
+    uri: "https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts",
     method: "POST",
     json: {
       login: form.login,
@@ -60,5 +85,19 @@ app.post("/form", (req, res) => {
   });
 });
 /* ----------------------------------------------- */
+// FORM DELETE
+app.get("/:id", (req, res) => {
+  const id = req.params.id;
+  const options = {
+    uri: `https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/${id}`,
+    method: "DELETE",
+  };
+  request(options, (error, response, body) => {
+    if (!error) {
+      res.redirect("/");
+    }
+  });
+});
+
 //Inicia el server
 app.listen(3000);

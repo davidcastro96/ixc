@@ -1,13 +1,37 @@
 {{!-- Contenido que estará disponible en el {{{body}}} del main --}}
 <h2>Listado de todos los contactos</h2>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function deleteContact(id){ 
+  
+  fetch(`/${id}`).then(function(response) {
+  if(response.ok) {
+    Swal.fire('contacto '+ id +' eliminado');
+    window.location.reload();
+    } else {
+      console.log('Error eliminando contacto');
+    }
+  })
+  .catch(function(error) {
+    console.log('Hubo un problema con la petición Fetch:' + error.message);
+  });
+  }
+</script>
+
 <div class="scroll">
   <table class="table table-dark">
-    <thead>
+    <thead
+      style="position: sticky;
+            top: -1;
+            z-index: 10; background:#343a40"
+    >
       <tr>
         <th scope="col">#</th>
         <th scope="col">lookupName</th>
         <th scope="col">createdTime</th>
         <th scope="col">updatedTime</th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     {{#if contacts}}
@@ -18,6 +42,16 @@
             <td>{{this.lookupName}}</td>
             <td>{{this.createdTime}}</td>
             <td>{{this.updatedTime}}</td>
+            <td><button
+                class="btn btn-info"
+                type="button"
+                onclick="editarContac({{this.id}})"
+              >editar</button></td>
+            <td><button
+                class="btn btn-danger"
+                type="button"
+                onclick="deleteContact({{this.id}})"
+              >eliminar</button></td>
           </tr>
         {{/each}}
       </tbody>
