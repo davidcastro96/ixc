@@ -47,23 +47,6 @@ app.get("/form", (req, res) => {
   res.render("form", { layout: "main" });
 });
 /* ----------------------------------------------- */
-// guardar data en la base de datos sqlite3
-
-function create() {
-  //const {id, lookupName, createdTime, updatedTime} = quoteObj;
-  const result = db.run(
-    'INSERT INTO datos (idapi,nombre,creado,actualizado) VALUES ("1","dsa","ds","dsds");'
-  );
-
-  let message = "Error in creating quote";
-  if (result.changes) {
-    message = "Quote created successfully";
-  }
-
-  return { message };
-}
-
-/* ----------------------------------------------- */
 //FORM POST CREAR CONTACTO
 app.post("/form", (req, res) => {
   const form = req.body;
@@ -101,28 +84,17 @@ app.get("/:id", (req, res) => {
   });
 });
 /* ----------------------------------------------- */
-app.path("/:id", (req, res) => {
+
+app.delete("/:id", (req, res) => {
   const id = req.params.id;
-  const body = req.body;
-  console.log(req.body);
+  console.log(id)
   const options = {
     uri: `https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/${id}`,
     method: "PATH",
-    json: {
-      login: body.login,
-      name: {
-        first: body.nombre,
-        last: body.apellido,
-      },
-    },
   };
-  request(options, (error, response, body) => {
-    if (!error) {
-      res.render("home", {
-        layout: "main",
-      });
-    }
-  });
+  
+  res.send('hello world');
 });
+
 //Inicia el server
 app.listen(3000);

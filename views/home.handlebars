@@ -5,7 +5,13 @@
   function deleteContact(id) {
     fetch(`/${id}`).then(function (response) {
       if (response.ok) {
-        Swal.fire('contacto ' + id + ' eliminado');
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'contacto eliminado',
+          showConfirmButton: false,
+          timer: 1500
+        })
         window.location.reload();
       } else {
         console.log('Error eliminando contacto');
@@ -17,35 +23,17 @@
   }
   //----------------------------------------------
   function editarContact(id) {
-    (async () => {
-
-      const { value: formValues } = await Swal.fire({
-        title: `actualización de datos del id ${id}`,
-        html:
-          '<input id="swal-input1" placeholder="login" class="swal2-input">' +
-          '<input id="swal-input2" placeholder="nombre" class="swal2-input">' +
-          '<input id="swal-input3" placeholder="apellido" class="swal2-input">',
-        focusConfirm: false,
-        preConfirm: () => {
-          return [
-            document.getElementById('swal-input1').value,
-            document.getElementById('swal-input2').value,
-            document.getElementById('swal-input3').value
-          ]
-        }
-      })
-
-      if (formValues) {
-        Swal.fire(JSON.stringify(formValues))
-        console.log(formValues)
-        fetch(`/${id}`,{
-          method: "PATH",
-          body: JSON.stringify(formValues)
-
-      });
+    fetch(`/${id}`,{method: 'DELETE'}).then(function (response) {
+      if (response.ok) {
+        console.log("ok 1")
+        //window.location.reload();
+      } else {
+        console.log('Error actualizando contacto');
       }
-
-    })()
+    })
+      .catch(function (error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+      });
   }
 </script>
 <div class="scroll">
