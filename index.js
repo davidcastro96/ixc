@@ -88,7 +88,7 @@ app.get("/:id", (req, res) => {
 app.patch("/:id", (req, res) => {
   const id = req.params.id;
   const body = req.body
-  console.log(body)
+  //console.log(body)
   const options = {
     uri: `https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/${id}`,
     method: "PATCH",
