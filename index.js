@@ -5,6 +5,9 @@ const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 const app = express();
 
+const port = process.env.PORT || 3000;
+
+// Conexión base de datos
 let db = new sqlite3.Database("./db/contacts.db", (err) => {
   if (err) {
     console.error(err.message);
@@ -12,6 +15,7 @@ let db = new sqlite3.Database("./db/contacts.db", (err) => {
   console.log("conectado a la base de datos");
 });
 
+// Url API REST Cloud Oracle
 const url =
   "https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts?offset=1100&limit=500";
 /* ----------------------------------------------- */
@@ -104,4 +108,4 @@ app.patch("/:id", (req, res) => {
 });
 
 //Inicia el server
-app.listen(80);
+app.listen(port);
