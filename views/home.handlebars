@@ -23,7 +23,7 @@
   }
   //----------------------------------------------
   function editarContact(id) {
-    fetch(`/${id}`,{method: 'DELETE'}).then(function (response) {
+    fetch(`/${id}`,{method: 'PATCH'}).then(function (response) {
       if (response.ok) {
         console.log("ok 1")
         //window.location.reload();

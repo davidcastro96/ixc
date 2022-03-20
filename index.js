@@ -85,12 +85,12 @@ app.get("/:id", (req, res) => {
 });
 /* ----------------------------------------------- */
 
-app.delete("/:id", (req, res) => {
+app.patch("/:id", (req, res) => {
   const id = req.params.id;
   console.log(id)
   const options = {
     uri: `https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/${id}`,
-    method: "PATH",
+    method: "PATCH",
   };
   
   res.send('hello world');
