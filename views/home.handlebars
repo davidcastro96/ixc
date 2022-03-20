@@ -64,8 +64,8 @@
         <th scope="col">lookupName</th>
         <th scope="col">createdTime</th>
         <th scope="col">updatedTime</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
+        <th scope="col">•</th>
+        <th scope="col">•</th>
       </tr>
     </thead>
     {{#if contacts}}
@@ -76,7 +76,7 @@
         <td>{{this.lookupName}}</td>
         <td>{{this.createdTime}}</td>
         <td>{{this.updatedTime}}</td>
-        <td><button class="btn btn-info" type="button" onclick="editarContact({{this.id}})">editar</button></td>
+        <td><button class="btn btn-info" type="button" onclick="editarContact({{this.id}})">editar login</button></td>
         <td><button class="btn btn-danger" type="button" onclick="deleteContact({{this.id}})">eliminar</button></td>
       </tr>
       {{/each}}
