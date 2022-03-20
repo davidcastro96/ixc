@@ -22,19 +22,37 @@
       });
   }
   //----------------------------------------------
-  function editarContact(id) {
-    fetch(`/${id}`,{method: 'PATCH'}).then(function (response) {
-      if (response.ok) {
-        console.log("ok 1")
-        //window.location.reload();
-      } else {
-        console.log('Error actualizando contacto');
-      }
-    })
-      .catch(function (error) {
-        console.log('Hubo un problema con la petición Fetch:' + error.message);
-      });
-  }
+    function editarContact(id) {
+      (async () => {
+
+        const { value: login } = await Swal.fire({
+          title: 'Multiple inputs',
+          html:
+            '<input id="swal-input1" name="login" placeholder="login" class="swal2-input">',
+          focusConfirm: false,
+          preConfirm: () => {
+            return {
+              login:
+                document.getElementById('swal-input1').value,
+            }
+          }
+        })
+
+        if (login) {
+          Swal.fire(JSON.stringify(login))
+          fetch(`/${id}`, {
+            method: 'PATCH', // or 'PUT'
+            body: JSON.stringify(login), // data can be `string` or {object}!
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(res => res.json())
+            .catch(error => console.log( error))
+            .then(response => console.log('Success:', response));
+        }
+
+      })()
+    }
 </script>
 <div class="scroll">
   <table class="table table-dark">
