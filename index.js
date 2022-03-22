@@ -1,39 +1,36 @@
 const express = require("express");
 const request = require("request");
-const sqlite3 = require("sqlite3").verbose();
 const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
+const { crearConexion, getConnection, resetData } = require("./database");
 const app = express();
 
-const port = process.env.PORT || 3000;
+// Crear conexión db
+crearConexion();
 
-// Conexión base de datos
-let db = new sqlite3.Database("./db/contacts.db", (err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log("conectado a la base de datos");
-});
+// Puertos del hosting o el 3000
+const port = process.env.PORT || 3000;
 
 // Url API REST Cloud Oracle
 const url =
   "https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts?offset=1100&limit=500";
 /* ----------------------------------------------- */
-//inicio el motor de plantillas
+// Inicio el motor de plantillas
 app.engine("handlebars", exphbs.engine());
 app.set("view engine", "handlebars");
 /* ----------------------------------------------- */
-//método para analizar las solicitudes entrantes
+// Método para analizar las solicitudes entrantes
 app.use(bodyParser.json()); // body en formato json
 app.use(bodyParser.urlencoded({ extended: true }));
 /* ----------------------------------------------- */
-//carpeta de estaticos
+// Carpeta de estaticos
 app.use(express.static("public"));
 /* ----------------------------------------------- */
-//ruta
+// Ruta principal
 app.get("/", (req, res) => {
+  // Conexión base de datos
   request(
-    //ruta de la API de IXC
+    // Ruta de la API de IXC
     url,
     (err, response, body) => {
       if (!err) {
@@ -41,6 +38,11 @@ app.get("/", (req, res) => {
         res.render("home", {
           layout: "main",
           contacts: contacts,
+        });
+        // Guardar ID en LowDB para poder consultar en caso de desconexion con la API
+        contacts.items.forEach((e) => {
+          getConnection().get("id").push(e.id).write();
+          console.log(e.id);
         });
       }
     }
@@ -51,7 +53,7 @@ app.get("/form", (req, res) => {
   res.render("form", { layout: "main" });
 });
 /* ----------------------------------------------- */
-//FORM POST CREAR CONTACTO
+// FORM POST CREAR CONTACTO
 app.post("/form", (req, res) => {
   const form = req.body;
   const options = {
@@ -91,12 +93,12 @@ app.get("/:id", (req, res) => {
 
 app.patch("/:id", (req, res) => {
   const id = req.params.id;
-  const body = req.body
+  const body = req.body;
   //console.log(body)
   const options = {
     uri: `https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/${id}`,
     method: "PATCH",
-    json: body
+    json: body,
   };
   request(options, (error, response, body) => {
     if (!error) {
@@ -107,5 +109,5 @@ app.patch("/:id", (req, res) => {
   });
 });
 
-//Inicia el server
+// Inicia el server
 app.listen(port);
