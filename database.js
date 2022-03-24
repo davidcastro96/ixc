@@ -16,8 +16,9 @@ const getConnection = () => {
 };
 
 function resetData() {
-  const newState = [];
+  const newState = ({ id: [] });
   db.setState(newState);
+  db.defaults({ id: [] }).write();
 }
 
 // Exportar funciones / métodos
