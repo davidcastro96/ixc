@@ -1,0 +1,80 @@
+{{!-- Contenido que estará disponible en el {{{body}}} del main --}}
+<h2>Listado de contactos por ID para filtrado</h2>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  function deleteContact(id) {
+    fetch(`/${id}`).then(function (response) {
+      if (response.ok) {
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'contacto eliminado',
+          showConfirmButton: false,
+          timer: 1500
+        })
+        window.location.reload();
+      } else {
+        console.log('Error eliminando contacto');
+      }
+    })
+      .catch(function (error) {
+        console.log('Hubo un problema con la petición Fetch:' + error.message);
+      });
+  }
+  //----------------------------------------------
+    function editarContact(id) {
+      (async () => {
+
+        const { value: login } = await Swal.fire({
+          title: `actualizar login del id ${id}`,
+          html:
+            '<input id="swal-input1" name="login" placeholder="login" class="swal2-input">',
+          focusConfirm: false,
+          preConfirm: () => {
+            return {
+              login:
+                document.getElementById('swal-input1').value,
+            }
+          }
+        })
+
+        if (login) {
+          Swal.fire(JSON.stringify(login))
+          fetch(`/${id}`, {
+            method: 'PATCH', // or 'PUT'
+            body: JSON.stringify(login), // data can be `string` or {object}!
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }).then(res => res.json())
+            .catch(error => console.log( error))
+            .then(response => console.log('Success:', response));
+        }
+
+      })()
+    }
+</script>
+<div class="scroll table-responsive">
+  <table class="table table-dark">
+    <thead style="position: sticky;
+            top: -1;
+            z-index: 10; background:#343a40">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">lookupName</th>
+        <th scope="col">City</th>
+      </tr>
+    </thead>
+    {{#if contactsIDs}}
+    <tbody>
+      {{#contactsIDs}}
+      <tr scope="col">
+        <th scope="row">{{this.id}}</th>
+        <td>{{this.lookupName}}</td>
+        <td>{{this.address.city}}</td>
+      </tr>
+      {{/contactsIDs}}
+    </tbody>
+    {{/if}}
+  </table>
+</div>

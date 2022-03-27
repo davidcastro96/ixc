@@ -3,6 +3,8 @@ const request = require("request");
 const exphbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 const {crearConexion, getConnection, resetData} = require("./database");
+const { response } = require("express");
+const fs = require('fs');
 const app = express();
 
 // Crear conexión db
@@ -41,11 +43,43 @@ app.get("/", (req, res) => { // Conexión base de datos
                 resetData();
                 contacts.items.forEach((e) => {
                     getConnection().get("id").push(e.id).write();
-                    console.log(e.id);
+                    //console.log(e.id);
                 });
             }
         }
     );
+});
+/* ----------------------------------------------- */
+
+// Iterar base de datos local .json para consultar los ids en el endpoint
+let obj = JSON.parse(fs.readFileSync('db.json', 'utf8'));
+for(var a in obj) {
+  for (var b in obj[a]) {
+      console.log("--")
+      let idOnly = (obj[a][b])
+      let uri = `https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/${idOnly}`;
+      console.log(uri)
+  }
+}
+
+// Url para enviar con ID a la API
+const urlWithId = "https://ICXCandidate:Welcome2021@imaginecx--tst2.custhelp.com/services/rest/connect/v1.3/contacts/14";
+
+app.get("/filter", (req, res) => { // Conexión base de datos
+  request(
+    // Ruta de la API de IXC
+    urlWithId,
+    (err, response, body) => {
+        if (!err) {
+            const contactsIDs = JSON.parse(body);
+            res.render("filter", {
+                layout: "main",
+                contactsIDs: contactsIDs
+            });
+            //console.log(contactsIDs)
+        }
+    }
+  );
 });
 /* ----------------------------------------------- */
 app.get("/form", (req, res) => {
